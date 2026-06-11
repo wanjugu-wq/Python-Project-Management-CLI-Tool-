@@ -1,6 +1,7 @@
 import argparse
 
 from models.user import User
+from utils.storage import load_data, save_data
 
 users = [] 
 
@@ -14,7 +15,12 @@ add_user.add_argument("--email", required=True)
 args = parser.parse_args()
 
 if args.command == "add-user":
+    data = load_data()
+
     user = User(args.name, args.email)
-    users.append(user)
+
+    data["users"].append(user.to_dict())
+
+    save_data(data)
 
     print(f"User created: {user}")
