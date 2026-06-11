@@ -2,6 +2,9 @@ import argparse
 
 from models.user import User
 from utils.storage import load_data, save_data
+from rich.console import Console
+
+console = Console()
 
 users = [] 
 
@@ -116,11 +119,10 @@ elif args.command == "list-tasks":
                 if project["title"] == args.project:
 
                     for task in project["tasks"]:
-                        print(
-                            f"Task {task['id']}"
-                            f"[{task['status']}] "
-                            f"{task['title']}"
-                        )
+                        status_color = "green" if task["status"] == "Completed" else "yellow"
+
+                        console.print(f"[{status_color}]Task {task['id']} - {task['title']}[/]"
+)
 elif args.command == "complete-task":
     data = load_data()
 
