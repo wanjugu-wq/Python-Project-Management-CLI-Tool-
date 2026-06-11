@@ -9,6 +9,7 @@ parser = argparse.ArgumentParser(description="Project Management CLI")
 subparsers = parser.add_subparsers(dest="command")
 
 add_user = subparsers.add_parser("add-user")
+list_users = subparsers.add_parser("list-users")
 add_user.add_argument("--name", required=True)
 add_user.add_argument("--email", required=True)
 
@@ -24,3 +25,14 @@ if args.command == "add-user":
     save_data(data)
 
     print(f"User created: {user}")
+
+elif args.command == "list-users":
+    data = load_data()
+
+    for user in data["users"]:
+        print(
+            f"User {user['id']}: "
+            f"{user['name']} "
+            f"({user['email']})"
+        )
+
