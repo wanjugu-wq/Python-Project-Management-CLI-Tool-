@@ -20,3 +20,11 @@ class User(Person):
         project = Project(title, description)
         self.projects.append(project)
         return project
+    
+    def to_dict(self):
+        return {
+        "id": self.id,
+        "name": self.name,
+        "email": self.email,
+        "projects": []
+    }
