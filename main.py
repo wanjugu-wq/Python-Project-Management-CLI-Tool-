@@ -1,29 +1,20 @@
+import argparse
+
 from models.user import User
 
-user = User("Alex", "alex@gmail.com")
+users = [] 
 
-project1 = user.add_project("CLI Tool", "School project")
-project2 = user.add_project("AI Bot", "Fun experiment")
+parser = argparse.ArgumentParser(description="Project Management CLI")
+subparsers = parser.add_subparsers(dest="command")
 
-task1 = project1.add_task("Build models")
-task2 = project1.add_task("Write CLI")
-task3 = project1.add_task("Test system")
+add_user = subparsers.add_parser("add-user")
+add_user.add_argument("--name", required=True)
+add_user.add_argument("--email", required=True)
 
-print(user)
+args = parser.parse_args()
 
-for project in user.projects:
-    print("\n", project)
+if args.command == "add-user":
+    user = User(args.name, args.email)
+    users.append(user)
 
-    for task in project.tasks:
-        print("  ", task)
-
-
-task1.mark_complete()
-
-print("\nAfter update: \n")
-
-for project in user.projects:
-    print(project)
-
-    for task in project.tasks:
-        print("  ", task)
+    print(f"User created: {user}")
