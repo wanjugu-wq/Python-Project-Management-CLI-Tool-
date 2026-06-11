@@ -23,10 +23,18 @@ list_projects = subparsers.add_parser("list-projects")
 list_projects.add_argument("--user-id", type=int, required=True)
 
 add_task = subparsers.add_parser("add-task")
-
 add_task.add_argument("--user-id", type=int, required=True)
 add_task.add_argument("--project", required=True)
 add_task.add_argument("--title", required=True)
+
+list_tasks = subparsers.add_parser("list-tasks")
+list_tasks.add_argument("--user-id", type=int, required=True)
+list_tasks.add_argument("--project", required=True)
+
+complete_task = subparsers.add_parser("complete-task")
+complete_task.add_argument("--user-id", type=int, required=True)
+complete_task.add_argument("--project", required=True)
+complete_task.add_argument("--task-id", type=int, required=True)
 
 args = parser.parse_args()
 
@@ -87,6 +95,7 @@ elif args.command == "add-task":
                 if project["title"] == args.project:
 
                     task = {
+                        "id": len(project["tasks"]) + 1,
                         "title": args.title,
                         "status": "Pending"
                     }
@@ -97,4 +106,34 @@ elif args.command == "add-task":
 
                     print("Task added successfully.")
                     break
+elif args.command == "list-tasks":
+    data = load_data()
+
+    for user in data["users"]:
+        if user["id"] == args.user_id:
+
+            for project in user["projects"]:
+                if project["title"] == args.project:
+
+                    for task in project["tasks"]:
+                        print(
+                            f"Task {task['id']}"
+                            f"[{task['status']}] "
+                            f"{task['title']}"
+                        )
+elif args.command == "complete-task":
+    data = load_data()
+
+    for user in data["users"]:
+        if user["id"] == args.user_id:
+
+            for project in user["projects"]:
+                if project["title"] == args.project:
+
+                    for task in project["tasks"]:
+                        if task["id"] == args.task_id:
+                            task["status"] = "Completed"
+                            save_data(data)
+                            print("Task marked as completed.")
+                            break
 
