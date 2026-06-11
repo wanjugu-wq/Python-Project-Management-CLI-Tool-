@@ -10,8 +10,23 @@ subparsers = parser.add_subparsers(dest="command")
 
 add_user = subparsers.add_parser("add-user")
 list_users = subparsers.add_parser("list-users")
+
 add_user.add_argument("--name", required=True)
 add_user.add_argument("--email", required=True)
+
+add_project = subparsers.add_parser("add-project")
+add_project.add_argument("--user-id", type=int, required=True)
+add_project.add_argument("--title", required=True)
+add_project.add_argument("--description", required=True)
+
+list_projects = subparsers.add_parser("list-projects")
+list_projects.add_argument("--user-id", type=int, required=True)
+
+add_task = subparsers.add_parser("add-task")
+
+add_task.add_argument("--user-id", type=int, required=True)
+add_task.add_argument("--project", required=True)
+add_task.add_argument("--title", required=True)
 
 args = parser.parse_args()
 
@@ -25,7 +40,6 @@ if args.command == "add-user":
     save_data(data)
 
     print(f"User created: {user}")
-
 elif args.command == "list-users":
     data = load_data()
 
@@ -35,4 +49,52 @@ elif args.command == "list-users":
             f"{user['name']} "
             f"({user['email']})"
         )
+elif args.command == "add-project":
+    data = load_data()
+
+    for user in data["users"]:
+        if user["id"] == args.user_id:
+
+            project = {
+                "title": args.title,
+                "description": args.description,
+                "tasks": []
+            }
+
+            user["projects"].append(project)
+
+            save_data(data)
+
+            print("Project added successfully.")
+            break
+elif args.command == "list-projects":
+    data = load_data()
+
+    for user in data["users"]:
+        if user["id"] == args.user_id:
+
+            for project in user["projects"]:
+                print(f"Project: {project['title']}")
+                print(f"Description: {project['description']}")
+                print()
+elif args.command == "add-task":
+    data = load_data()
+
+    for user in data["users"]:
+        if user["id"] == args.user_id:
+
+            for project in user["projects"]:
+                if project["title"] == args.project:
+
+                    task = {
+                        "title": args.title,
+                        "status": "Pending"
+                    }
+
+                    project["tasks"].append(task)
+
+                    save_data(data)
+
+                    print("Task added successfully.")
+                    break
 
