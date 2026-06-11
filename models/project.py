@@ -1,3 +1,5 @@
+from models.task import Task
+
 class Project:
     project_count = 0
 
@@ -11,3 +13,8 @@ class Project:
 
     def __str__(self):
         return f"Project {self.id}: {self.title}"
+    
+    def add_task(self, title):
+        task = Task(title)
+        self.tasks.append(task)
+        return task
