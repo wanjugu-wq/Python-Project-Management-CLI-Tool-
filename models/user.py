@@ -25,5 +25,6 @@ class User(Person):
         return {
         "id": self.id,
         "name": self.name,
-        "email": self.email
+        "email": self.email,
+        "projects": []
     }
