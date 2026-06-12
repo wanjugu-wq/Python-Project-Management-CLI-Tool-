@@ -62,22 +62,24 @@ elif args.command == "list-users":
         )
 elif args.command == "add-project":
     data = load_data()
+    try:
+        for user in data["users"]:
+            if user["id"] == args.user_id:
 
-    for user in data["users"]:
-        if user["id"] == args.user_id:
-
-            project = {
+                project = {
                 "title": args.title,
                 "description": args.description,
                 "tasks": []
-            }
+                }
 
-            user["projects"].append(project)
+                user["projects"].append(project)
 
-            save_data(data)
+                save_data(data)
 
-            print("Project added successfully.")
-            break
+                print("Project added successfully.")
+                break
+    except ValueError as e:
+        print(f"Error creating user: {e}")
 elif args.command == "list-projects":
     data = load_data()
 

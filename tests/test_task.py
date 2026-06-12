@@ -1,7 +1,7 @@
 from models.task import Task
 
 def test_task_completion():
-    task = Task("Build models")
+    task = Task("Coderbyte")
 
     task.mark_complete()
 

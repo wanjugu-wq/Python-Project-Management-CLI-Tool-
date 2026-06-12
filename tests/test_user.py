@@ -1,7 +1,7 @@
 from models.user import User
 
 def test_user_creation():
-    user = User("Alex", "alex@gmail.com")
+    user = User("Michelle", "wanjugu@gmail.com")
 
-    assert user.name == "Alex"
-    assert user.email == "alex@gmail.com"
+    assert user.name == "Michelle"
+    assert user.email == "wanjugu@gmail.com"
